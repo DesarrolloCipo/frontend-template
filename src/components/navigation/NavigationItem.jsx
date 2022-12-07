@@ -4,7 +4,8 @@ import {
     lighten,
     ListItemButton,
     ListItemIcon,
-    ListItemText
+    ListItemText,
+    styled
 } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
@@ -27,7 +28,7 @@ const NavigationItem = ({ item, collapsed }) => {
     }, [pathname, item.url]);
 
     return (
-        <div sx={[
+        <StyledDiv sx={[
             styles.root,
             nested && open && styles.expanded,
             pathname.search(new RegExp(item.url, "g")) !== -1 &&
@@ -74,9 +75,11 @@ const NavigationItem = ({ item, collapsed }) => {
                     </List>
                 </Collapse>
             )}
-        </div>
+        </StyledDiv>
     );
-}
+};
+
+const StyledDiv = styled('div')({});
 
 const styles = {
     root: {

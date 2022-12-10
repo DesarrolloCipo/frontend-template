@@ -1,8 +1,9 @@
 import { ChevronLeft, ChevronRight, Menu as MenuIcon } from "@mui/icons-material";
-import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, styled, Toolbar, Typography, useTheme } from "@mui/material";
-import { useEffect, useState } from "react";
+import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, styled, Switch, Toolbar, Typography, useTheme } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { Navigation } from "../components";
+import { ThemeContext } from "../themes";
 
 const drawerWidth = 210;
 
@@ -11,6 +12,7 @@ const MainLayout = ({ navigationData }) => {
     const [extended, setExtended] = useState(true);
     const [mobileOpen, setMobileOpen] = useState(false);
     const styles = useStyles(useTheme());
+    const { themeSwitchConfig } = useContext(ThemeContext);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -42,7 +44,23 @@ const MainLayout = ({ navigationData }) => {
             <Divider />
             <Toolbar sx={styles.drawerFooter}>
                 <Typography component="p" variant="body2" align="center">
-                    ¡Hello World!
+                    <StyledLink
+                        sx={styles.copyrightText}
+                        href='https://github.com/trutoro/react-material-sidebar'
+                        rel='noreferrer'
+                        target='_blank'
+                    >
+                        Credits to Pritthish Nath
+                    </StyledLink>
+                    -
+                    <StyledLink
+                        sx={styles.copyrightText}
+                        href='https://github.com/Raam4'
+                        rel='noreferrer'
+                        target='_blank'
+                    >
+                        Updated by Raama
+                    </StyledLink>
                 </Typography>
             </Toolbar>
         </>
@@ -78,7 +96,11 @@ const MainLayout = ({ navigationData }) => {
                     <Typography variant="h6" noWrap sx={styles.appBarTitle}>
                         Responsive SideBar Layout
                     </Typography>
-                    {/* Maybe switch themes*/}
+                    <Switch
+                        checked={themeSwitchConfig.state}
+                        onChange={themeSwitchConfig.handler}
+                        name="themeSwitch"
+                    />
                 </Toolbar>
             </AppBar>
             <Box sx={{ display: { xs: "block", sm: "none" } }}>
@@ -116,6 +138,7 @@ const MainLayout = ({ navigationData }) => {
 
 const StyledDiv = styled('div')({});
 const StyledMain = styled('main')({});
+const StyledLink = styled('a')({});
 
 const useStyles = (theme) => ({
     root: {

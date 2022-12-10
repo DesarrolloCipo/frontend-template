@@ -1,13 +1,13 @@
-import { Box, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 
 const PageBody = ({ children, style }) => {
     return(
         <Box
-            style={{
+            sx={{
                 padding: 2,
                 flex: 1,
                 overflow: "auto",
-                //backgroundColor?
+                backgroundColor: 'red', //here
                 ...style
             }}>
             {children}

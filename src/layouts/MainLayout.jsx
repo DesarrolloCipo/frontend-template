@@ -1,16 +1,16 @@
 import { ChevronLeft, ChevronRight, Menu as MenuIcon } from "@mui/icons-material";
-import { AppBar, CssBaseline, Divider, Drawer, Hidden, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, styled, Toolbar, Typography, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { Navigation } from "../components";
-
 
 const drawerWidth = 210;
 
-const MainLayout = ({ navigationData, children }) => {
+const MainLayout = ({ navigationData }) => {
     const location = useLocation();
     const [extended, setExtended] = useState(true);
     const [mobileOpen, setMobileOpen] = useState(false);
+    const styles = useStyles(useTheme());
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -30,17 +30,17 @@ const MainLayout = ({ navigationData, children }) => {
 
     const drawer = (
         <>
-            <div sx={{}}>
+            <StyledDiv sx={styles.toolbarIcon}>
                 <IconButton
                     onClick={handleExtendClose}
-                    sx={{}}>
+                    sx={styles.collapseButton}>
                     <ChevronLeft />
                 </IconButton>
-            </div>
+            </StyledDiv>
             <Divider />
             <Navigation data={navigationData} collapsed={!extended} />
             <Divider />
-            <Toolbar sx={{}}>
+            <Toolbar sx={styles.drawerFooter}>
                 <Typography component="p" variant="body2" align="center">
                     ¡Hello World!
                 </Typography>
@@ -49,19 +49,22 @@ const MainLayout = ({ navigationData, children }) => {
     );
 
     return (
-        <div> {/*styles?*/}
+        <StyledDiv sx={styles.root}>
             <CssBaseline />
             <AppBar
                 position="fixed"
-                sx={{}}
+                sx={[styles.appBarShift, extended && styles.appBar]}
             >
-                <Toolbar sx={{}}>
+                <Toolbar sx={styles.toolbar}>
                     <IconButton
                         edge="start"
                         color="inherit"
                         aria-label="extend drawer"
                         onClick={handleExtendOpen}
-                        sx={{}}>
+                        sx={[
+                            styles.extendButton,
+                            extended && styles.extendButtonHidden
+                        ]}>
                         <ChevronRight />
                     </IconButton>
                     <IconButton
@@ -69,71 +72,73 @@ const MainLayout = ({ navigationData, children }) => {
                         aria-label="open drawer"
                         edge="start"
                         onClick={handleDrawerToggle}
-                        sx={{}}>
+                        sx={styles.menuButton}>
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap sx={{}}>
+                    <Typography variant="h6" noWrap sx={styles.appBarTitle}>
                         Responsive SideBar Layout
                     </Typography>
                     {/* Maybe switch themes*/}
                 </Toolbar>
             </AppBar>
-            <Hidden smUp implementation="css">
+            <Box sx={{ display: { xs: "block", sm: "none" } }}>
                 <Drawer
                     variant="temporary"
-                    anchor="rigth"
+                    anchor="right"
                     open={mobileOpen}
                     onClose={handleDrawerToggle}
-                    //classes?
+                    PaperProps={{ sx: styles.drawerPaper }}
                     ModalProps={{ keepMounted: true }}>
                     {drawer}
                 </Drawer>
-            </Hidden>
-            <Hidden xsDown implementation='css'>
+            </Box>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 <Drawer
                     variant='permanent'
-                    //classes?
+                    PaperProps={{ sx: [styles.drawerPaper, !extended && styles.drawerPaperClose] }}
                     open={extended}>
                     {drawer}
                 </Drawer>
-            </Hidden>
-            <main>{/* styles? */}
-                <div /> {/* styles as toolbar*/}
-                <div style={{
+            </Box>
+            <StyledMain sx={[styles.contentShift, extended && styles.content]}>
+                <StyledDiv sx={styles.toolbar} />
+                <StyledDiv sx={{
                     flex: 1,
                     display: "flex",
                     flexDirection: "column"
                 }}>
-                    {children}
-                </div>
-            </main>
-        </div>
+                    <Outlet />
+                </StyledDiv>
+            </StyledMain>
+        </StyledDiv>
     );
 };
 
-const styles = {
+const StyledDiv = styled('div')({});
+const StyledMain = styled('main')({});
+
+const useStyles = (theme) => ({
     root: {
         display: "flex",
         height: "100vh",
     },
     appBarShift: {
-        zIndex: [null, "theme.zIndex.drawer" + 2],
-        transition: [null,
-            (theme) => {theme.transitions.create(["width", "margin"], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            })}
-        ]
+        [theme.breakpoints.up("sm")]: {
+            zIndex: theme.zIndex.drawer + 2,
+            transition: theme.transitions.create(["width", "margin"], {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+        },
     },
-    appBar: {
-        width: [null, `calc(100% - ${drawerWidth}px)`],
+    appBar:{
         [theme.breakpoints.up("sm")]: {
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
             zIndex: theme.zIndex.drawer + 2,
             transition: theme.transitions.create(["width", "margin"], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
             }),
         },
     },
@@ -145,13 +150,13 @@ const styles = {
     },
     collapseButton: {
         color: "inherit",
-        [theme.breakpoints.down("xs")]: {
+        [theme.breakpoints.down("sm")]: {
             display: "none",
         },
     },
     extendButton: {
         marginRight: 36,
-        [theme.breakpoints.down("xs")]: {
+        [theme.breakpoints.down("sm")]: {
             display: "none",
         },
     },
@@ -176,7 +181,6 @@ const styles = {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
-
         color: theme.palette.type === "light" && theme.palette.grey[100],
         backgroundColor: theme.palette.secondary.main,
     },
@@ -184,15 +188,15 @@ const styles = {
         [theme.breakpoints.up("sm")]: {
             overflowX: "hidden",
             transition: theme.transitions.create("width", {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
             }),
             width: theme.spacing(7),
         },
     },
     appBarTitle: {
         flex: 1,
-        fontWeight: 200,
+        fontWeight: 200
     },
     contentShift: {
         flexGrow: 1,
@@ -203,8 +207,8 @@ const styles = {
             marginLeft: theme.spacing(7),
             zIndex: theme.zIndex.drawer + 1,
             transition: theme.transitions.create(["width", "margin"], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
             }),
         },
     },
@@ -214,17 +218,16 @@ const styles = {
             marginLeft: drawerWidth,
             zIndex: theme.zIndex.drawer + 1,
             transition: theme.transitions.create(["width", "margin"], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
             }),
         },
     },
-
     drawerFooter: {
         flex: 1,
         alignItems: "flex-end",
         justifyContent: "center",
-        padding: theme.spacing(2),
+        padding: 2,
     },
     copyrightText: {
         fontSize: 11,
@@ -237,6 +240,6 @@ const styles = {
         textDecoration: "none",
         color: "inherit",
     },
-};
+});
 
 export default MainLayout;

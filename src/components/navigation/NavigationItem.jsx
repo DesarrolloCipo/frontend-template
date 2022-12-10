@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
+    Box,
     Collapse,
     lighten,
+    List,
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    styled
+    styled,
+    useTheme
 } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 const NavigationItem = ({ item, collapsed }) => {
     const { pathname } = useLocation();
+    const styles = useStyles(useTheme());
 
     //If nested nav
     const [open, setOpen] = useState(false);
@@ -32,7 +36,7 @@ const NavigationItem = ({ item, collapsed }) => {
             styles.root,
             nested && open && styles.expanded,
             pathname.search(new RegExp(item.url, "g")) !== -1 &&
-                !nested && styles.selected
+            !nested && styles.selected
         ]}>
             <ListItemButton
                 sx={styles.listItem}
@@ -48,7 +52,7 @@ const NavigationItem = ({ item, collapsed }) => {
                     <ListItemIcon sx={styles.listIcon}>
                         {(item.icon) && <item.icon /> || ""}
                     </ListItemIcon>
-                    <ListItemText /*check style*/ >
+                    <ListItemText primaryTypographyProps={ collapsed ? {sx: styles.listItemText} : {} } >
                         {item.name}
                     </ListItemText>
                     {nested &&
@@ -62,7 +66,7 @@ const NavigationItem = ({ item, collapsed }) => {
 
             {nested && (
                 <Collapse in={open} timeout="auto" unmountOnExit>
-                    <List>
+                    <List disablePadding>
                         {item.navigationData.map((nestedItem, i) => {
                             return (
                                 <NavigationItem
@@ -81,7 +85,7 @@ const NavigationItem = ({ item, collapsed }) => {
 
 const StyledDiv = styled('div')({});
 
-const styles = {
+const useStyles = (theme) => ({
     root: {
         width: "95%",
         margin: "4px auto",
@@ -104,23 +108,27 @@ const styles = {
         width: "100%",
     },
     listLinkCollapsed: {
-        width: [null, 7/10],
-        flexDirection: [null, "column"],
-        justifyContent: [null, "center"]
+        [theme.breakpoints.up("sm")]: {
+            width: theme.spacing(7),
+            flexDirection: "column",
+            justifyContent: "center",
+        },
     },
     listIcon: {
         color: "inherit",
         justifyContent: "center",
     },
     listItemText: {
-        fontSize: [null, 9]
+        [theme.breakpoints.up("sm")]: {
+            fontSize: 9,
+        },
     },
     expanded: {
-        backgroundColor: lighten("theme.palette.secondary.main", 0.1),
+        backgroundColor: lighten(theme.palette.secondary.main, 0.1),
     },
     selected: {
-        backgroundColor: lighten("theme.palette.secondary.main", 0.3),
+        backgroundColor: lighten(theme.palette.secondary.main, 0.3),
     }
-};
+});
 
 export default NavigationItem;

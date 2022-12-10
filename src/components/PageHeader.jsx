@@ -9,8 +9,8 @@ const PageHeader = ({ title, children, style }) => {
                 <Toolbar
                     variant="dense"
                     sx={{
-                        backgroundColor: "theme.palette.background.paper",
-                        color: "theme.palette.text.secondary",
+                        backgroundColor: "background.default", //here
+                        color: "text.default", //here
                         display: "flex"
                     }}
                     style={{ ...style }}>

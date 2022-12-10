@@ -134,7 +134,7 @@ const useStyles = (theme) => ({
     appBar:{
         [theme.breakpoints.up("sm")]: {
             width: `calc(100% - ${drawerWidth}px)`,
-            marginLeft: drawerWidth,
+            marginLeft: `${drawerWidth}px`,
             zIndex: theme.zIndex.drawer + 2,
             transition: theme.transitions.create(["width", "margin"], {
               easing: theme.transitions.easing.sharp,
@@ -155,7 +155,7 @@ const useStyles = (theme) => ({
         },
     },
     extendButton: {
-        marginRight: 36,
+        marginRight: "36px",
         [theme.breakpoints.down("sm")]: {
             display: "none",
         },
@@ -172,7 +172,7 @@ const useStyles = (theme) => ({
         ...theme.mixins.toolbar,
     },
     drawerPaper: {
-        width: drawerWidth,
+        width: `${drawerWidth}px`,
         display: "flex",
         position: "fixed",
         height: "100vh",
@@ -215,7 +215,7 @@ const useStyles = (theme) => ({
     content: {
         [theme.breakpoints.up("sm")]: {
             width: `calc(100% - ${drawerWidth}px)`,
-            marginLeft: drawerWidth,
+            marginLeft: `${drawerWidth}px`,
             zIndex: theme.zIndex.drawer + 1,
             transition: theme.transitions.create(["width", "margin"], {
               easing: theme.transitions.easing.sharp,

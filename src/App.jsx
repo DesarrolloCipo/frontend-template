@@ -25,9 +25,11 @@ const DashboardPage = Loadable(lazy(() => import("./pages/Dashboard")))
 
 const router = createBrowserRouter([
   {
+    path: "/",
     element: <MainLayout navigationData={[{ name: "Dashboard", icon: Dashboard, url: "/dashboard" }]} />,
     children: [
       {
+        index: true,
         path: "/dashboard",
         element: <DashboardPage />
       }

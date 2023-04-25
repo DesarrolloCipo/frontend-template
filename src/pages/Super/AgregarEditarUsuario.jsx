@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Card } from "@mui/material";
 import { PageBody, PageHeader, Spinner } from "../../components";
-import UsuarioForm from "../formularios/Usuario";
+import UsuarioForm from "../../formularios/Usuario";
 import { useQueries } from "react-query";
 import { CommonService } from "../../services/common.service";
 import { useNavigate, useParams } from "react-router-dom";

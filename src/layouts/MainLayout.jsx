@@ -1,18 +1,31 @@
 import { ChevronLeft, ChevronRight, Menu as MenuIcon } from "@mui/icons-material";
-import { AppBar, Box, CssBaseline, Divider, Drawer, IconButton, styled, Switch, Toolbar, Typography, useTheme } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import {
+    AppBar,
+    Avatar,
+    Box,
+    CssBaseline,
+    Divider,
+    Drawer,
+    IconButton,
+    styled,
+    Toolbar,
+    Typography,
+    useTheme
+} from "@mui/material";
+import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { Navigation } from "../components";
-import { ThemeContext } from "../themes";
+import { AuthService } from "../services/auth.service";
+import { useNavigate } from "react-router-dom";
 
-const drawerWidth = 210;
+const drawerWidth = 220;
 
 const MainLayout = ({ navigationData }) => {
+    const navigate = useNavigate();
     const location = useLocation();
     const [extended, setExtended] = useState(true);
     const [mobileOpen, setMobileOpen] = useState(false);
     const styles = useStyles(useTheme());
-    const { themeSwitchConfig } = useContext(ThemeContext);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -25,6 +38,11 @@ const MainLayout = ({ navigationData }) => {
     const handleExtendClose = () => {
         setExtended(false);
     };
+
+    const handleLogout = () => {
+        AuthService.logout();
+        navigate('/login');
+    }
 
     useEffect(() => {
         setMobileOpen(false);
@@ -43,25 +61,18 @@ const MainLayout = ({ navigationData }) => {
             <Navigation data={navigationData} collapsed={!extended} />
             <Divider />
             <Toolbar sx={styles.drawerFooter}>
-                <Typography component="p" variant="body2" align="center">
-                    <StyledLink
-                        sx={styles.copyrightText}
-                        href='https://github.com/trutoro/react-material-sidebar'
-                        rel='noreferrer'
-                        target='_blank'
-                    >
-                        Credits to Pritthish Nath
-                    </StyledLink>
-                    -
-                    <StyledLink
-                        sx={styles.copyrightText}
-                        href='https://github.com/Raam4'
-                        rel='noreferrer'
-                        target='_blank'
-                    >
-                        Updated by Raama
-                    </StyledLink>
-                </Typography>
+                <Divider />
+                <StyledDiv>
+                    <IconButton
+                        sx={{fontSize: 15, color: 'inherit'}}
+                        onClick={handleLogout}
+                        >
+                        <Avatar sx={{ marginRight: 2, backgroundColor: 'crimson' }}>
+                            {sessionStorage.getItem("username").charAt(0).toUpperCase()}
+                        </Avatar>
+                        Cerrar sesión
+                    </IconButton>
+                </StyledDiv>
             </Toolbar>
         </>
     );
@@ -94,14 +105,14 @@ const MainLayout = ({ navigationData }) => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap sx={styles.appBarTitle}>
-                        Responsive SideBar Layout
+                        Municipalidad de Cipolletti
                     </Typography>
-                    <Switch
+                    {/*<Switch
                         checked={themeSwitchConfig.state}
                         onChange={themeSwitchConfig.handler}
                         name="themeSwitch"
                         color="secondary"
-                    />
+                    />*/}
                 </Toolbar>
             </AppBar>
             <Box sx={{ display: { xs: "block", sm: "none" } }}>
@@ -211,6 +222,19 @@ const useStyles = (theme) => ({
         }),
         color: theme.palette.type === "light" && theme.palette.grey[100],
         backgroundColor: theme.palette.secondary.main,
+        "::-webkit-scrollbar": {
+            width: "0.25em"
+        },
+        "::-webkit-scrollbar-track": {
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)"
+        },
+        "::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(255,255,255,.25)",
+            borderRadius: "10px"
+        },
+        [theme.breakpoints.down("md")]: {
+            height: "90vh",
+        }
     },
     drawerPaperClose: {
         [theme.breakpoints.up("sm")]: {

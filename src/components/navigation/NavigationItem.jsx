@@ -26,17 +26,19 @@ const NavigationItem = ({ item, collapsed }) => {
     }
 
     useEffect(() => {
-        if (pathname.search(new RegExp(item.url, "g")) !== -1) {
+        if (pathname.search(new RegExp(`/${item.path}`, "g")) !== -1) {
             setOpen(true);
         }
-    }, [pathname, item.url]);
+    }, [pathname, `/${item.path}`]);
 
     return (
         <StyledDiv sx={[
             styles.root,
             nested && open && styles.expanded,
-            pathname.search(new RegExp(item.url, "g")) !== -1 &&
-            !nested && styles.selected
+            pathname == `/${item.path}` &&
+            !nested && styles.selected,
+            pathname.search(new RegExp(`/${item.path}`, "g")) !== -1 &&
+            nested && !open && styles.nestedSelected
         ]}>
             <ListItemButton
                 sx={styles.listItem}
@@ -48,11 +50,17 @@ const NavigationItem = ({ item, collapsed }) => {
                         collapsed && styles.listLinkCollapsed
                     ]}
                     component={!nested ? Link : "div"}
-                    to={`${item.url}`}>
-                    <ListItemIcon sx={styles.listIcon}>
+                    to={`${item.path}`}>
+                    {item.icon && <ListItemIcon sx={styles.listIcon}>
                         {(item.icon) && <item.icon /> || ""}
-                    </ListItemIcon>
-                    <ListItemText primaryTypographyProps={ collapsed ? {sx: styles.listItemText} : {} } >
+                    </ListItemIcon>}
+                    <ListItemText
+                        primaryTypographyProps={
+                            collapsed ?
+                            {sx: styles.collapsedListItemText}
+                            :
+                            {sx: [!item.icon && styles.listItemText]}
+                        }>
                         {item.name}
                     </ListItemText>
                     {nested &&
@@ -68,13 +76,15 @@ const NavigationItem = ({ item, collapsed }) => {
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <List disablePadding>
                         {item.navigationData.map((nestedItem, i) => {
-                            return (
-                                <NavigationItem
-                                    key={i}
-                                    item={nestedItem}
-                                    collapsed={collapsed}
-                                />
-                            )
+                            if(nestedItem.roles.includes(sessionStorage.getItem("id_rol"))){
+                                return (
+                                    <NavigationItem
+                                        key={i}
+                                        item={nestedItem}
+                                        collapsed={collapsed}
+                                    />
+                                )
+                            }
                         })}
                     </List>
                 </Collapse>
@@ -119,6 +129,9 @@ const useStyles = (theme) => ({
         justifyContent: "center",
     },
     listItemText: {
+        fontSize: 12
+    },
+    collapsedListItemText: {
         [theme.breakpoints.up("sm")]: {
             fontSize: 9,
         },
@@ -126,8 +139,11 @@ const useStyles = (theme) => ({
     expanded: {
         backgroundColor: lighten(theme.palette.secondary.main, 0.1),
     },
-    selected: {
+    nestedSelected: {
         backgroundColor: lighten(theme.palette.secondary.main, 0.3),
+    },
+    selected: {
+        backgroundColor: lighten(theme.palette.secondary.main, 0.6),
     }
 });
 

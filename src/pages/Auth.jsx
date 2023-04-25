@@ -1,5 +1,5 @@
 import { AppBar, Box, Card, Toolbar, Typography, useTheme } from "@mui/material";
-import LoginForm from "./formularios/Login";
+import LoginForm from "../formularios/Login";
 import { AuthService } from "../services/auth.service";
 import { CommonService } from "../services/common.service";
 import { useNavigate } from "react-router-dom";
@@ -69,7 +69,7 @@ const Auth = () => {
             </AppBar>
             <main style={styles.main}>
                 <Card sx={styles.cardContent}>
-                    <Typography component="div" variant="h5">Transporte</Typography>
+                    <Typography component="div" variant="h5">Template</Typography>
                     <Typography component="div" variant="subtitle1">Inicio de sesión</Typography>
                     <Box sx={{ padding: 5 }}>
                         <LoginForm handleSubmit={handleLogin} />

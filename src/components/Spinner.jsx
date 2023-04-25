@@ -3,7 +3,7 @@ import { CircularProgress } from "@mui/material";
 const Spinner = () => {
     return(
         <div style={{
-            height: "100vh",
+            height: "100%",
             display: "flex",
             justifyContent: "center",
             alignItems: "center"

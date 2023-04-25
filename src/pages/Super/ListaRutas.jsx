@@ -4,7 +4,7 @@ import { ListTable, PageBody, PageHeader, Spinner } from "../../components";
 import { useQueries } from "react-query";
 import { CommonService } from "../../services/common.service";
 import { useSnackbar } from "notistack";
-import RutaForm from "../formularios/Ruta";
+import RutaForm from "../../formularios/Ruta";
 
 const TABLE_HEAD = [
     {id: "name", label: "Nombre" },

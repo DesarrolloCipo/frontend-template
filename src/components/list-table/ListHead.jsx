@@ -1,0 +1,62 @@
+import {
+    Box,
+    Checkbox,
+    TableRow,
+    TableCell,
+    TableHead,
+    TableSortLabel
+} from "@mui/material";
+
+const visuallyHidden = {
+    border: 0,
+    margin: -1,
+    padding: 0,
+    width: "1px",
+    height: "1px",
+    overflow: "hidden",
+    position: "absolute",
+    whiteSpace: "nowrap",
+    clip: "rect(0 0 0 0)",
+};
+
+const ListHead = ({
+    order,
+    orderBy,
+    rowCount,
+    headLabel,
+    numSelected,
+    onRequestSort,
+    onSelectAllClick,
+    collapsible
+}) => {
+    const createSortHandler = (property) => (event) => {
+        onRequestSort(event, property);
+    };
+
+    return (
+        <TableHead>
+            <TableRow>
+                {collapsible &&
+                    <TableCell sx={{ width: 5 }} />
+                }
+                <TableCell padding="checkbox">
+                    <Checkbox
+                        indeterminate={numSelected > 0 && numSelected < rowCount}
+                        checked={rowCount > 0 && numSelected === rowCount}
+                        onChange={onSelectAllClick}
+                    />
+                </TableCell>
+                {headLabel.map((headCell, i) => (
+                    <TableCell key={`${headCell.id}-${i}`} align="center" sortDirection={orderBy === headCell.id ? order : false}>
+                        <TableSortLabel hideSortIcon active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : "asc"} onClick={createSortHandler(headCell.id)}>
+                            {headCell.label}
+                            {orderBy === headCell.id ? <Box sx={{ ...visuallyHidden }}>{order === "desc" ? "sorted descending" : "sorted ascending"}</Box> : null}
+                        </TableSortLabel>
+                    </TableCell>
+                ))}
+            </TableRow>
+        </TableHead>
+    );
+};
+
+export default ListHead;

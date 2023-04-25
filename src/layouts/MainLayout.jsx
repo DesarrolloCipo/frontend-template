@@ -100,13 +100,14 @@ const MainLayout = ({ navigationData }) => {
                         checked={themeSwitchConfig.state}
                         onChange={themeSwitchConfig.handler}
                         name="themeSwitch"
+                        color="secondary"
                     />
                 </Toolbar>
             </AppBar>
             <Box sx={{ display: { xs: "block", sm: "none" } }}>
                 <Drawer
                     variant="temporary"
-                    anchor="right"
+                    anchor="left"
                     open={mobileOpen}
                     onClose={handleDrawerToggle}
                     PaperProps={{ sx: styles.drawerPaper }}
@@ -186,7 +187,11 @@ const useStyles = (theme) => ({
     extendButtonHidden: {
         display: "none",
     },
-    toolbar: { paddingRight: 24, ...theme.mixins.toolbar },
+    toolbar: {
+        paddingRight: 24,
+        ...theme.mixins.toolbar,
+        backgroundColor: theme.palette.primary.main
+    },
     toolbarIcon: {
         display: "flex",
         alignItems: "center",

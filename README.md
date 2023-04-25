@@ -37,3 +37,10 @@ $ npm run dev
 Incluye:
 - Tabla tipo lista con ordenamiento, búsqueda, selección múltiple y acciones.
 - Inputs customizados para utilizar dentro de Formik, con validación incluida para utilizar con Yup. También se puede encontrar una tabla de tipo input con acciones de CRUD para datos anidados.
+
+## Por hacer
+- Documentación in code de componentes.
+- Rama de ejemplo de uso con auth vía cookie httpOnly.
+- Ajuste de estilos.
+- Arreglos en componentes de navegación.
+- Responsividad.

@@ -30,7 +30,7 @@ $ npm run dev
 ## Otras librerías
 
 - [MUI Confirm](https://www.npmjs.com/package/material-ui-confirm)
--[Notistack](https://notistack.com/getting-started)
+- [Notistack](https://notistack.com/getting-started)
 
 ## Componentes
 

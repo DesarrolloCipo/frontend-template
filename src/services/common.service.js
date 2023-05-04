@@ -1,4 +1,4 @@
-import { api } from "./config/axiosConfig";
+import api from "./config/axiosConfig";
 
 export const CommonService = {
     get: async function(endpoint, id){

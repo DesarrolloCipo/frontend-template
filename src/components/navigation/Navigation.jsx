@@ -9,7 +9,7 @@ const Navigation = ({ data, collapsed }) => {
     let renderData = data?.map((item, index) => {
         if(!isUndefined(item.navigationData)){
             if(!item.navigationData.some((nav) => 
-                nav.roles.includes(sessionStorage.getItem("id_rol"))
+                nav.roles.includes(localStorage.getItem("id_rol"))
             )) return null;
         }
         return <NavigationItem key={index} item={item} collapsed={collapsed} />

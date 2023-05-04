@@ -68,7 +68,7 @@ const MainLayout = ({ navigationData }) => {
                         onClick={handleLogout}
                         >
                         <Avatar sx={{ marginRight: 2, backgroundColor: 'crimson' }}>
-                            {sessionStorage.getItem("username").charAt(0).toUpperCase()}
+                            {localStorage.getItem("username").charAt(0).toUpperCase()}
                         </Avatar>
                         Cerrar sesión
                     </IconButton>
@@ -105,7 +105,7 @@ const MainLayout = ({ navigationData }) => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap sx={styles.appBarTitle}>
-                        Municipalidad de Cipolletti
+                        Bar Title
                     </Typography>
                     {/*<Switch
                         checked={themeSwitchConfig.state}

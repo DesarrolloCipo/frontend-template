@@ -1,4 +1,4 @@
-import { api } from "./config/axiosConfig";
+import api from "./config/axiosConfig";
 
 export const AuthService = {
     login: async function(credentials){
@@ -10,7 +10,7 @@ export const AuthService = {
         return data;
     },
     logout: function(){
-        sessionStorage.clear();
+        localStorage.clear();
         return;
     },
     getRoutes: async function(){

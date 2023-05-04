@@ -76,7 +76,7 @@ const NavigationItem = ({ item, collapsed }) => {
                 <Collapse in={open} timeout="auto" unmountOnExit>
                     <List disablePadding>
                         {item.navigationData.map((nestedItem, i) => {
-                            if(nestedItem.roles.includes(sessionStorage.getItem("id_rol"))){
+                            if(nestedItem.roles.includes(localStorage.getItem("id_rol"))){
                                 return (
                                     <NavigationItem
                                         key={i}

@@ -28,11 +28,10 @@ const Auth = () => {
     const handleLogin = async (values) => {
         const response = await AuthService.login(values);
         if(response){
-            setUserId(response.userData.id);
-            sessionStorage.setItem("auth-token", response.token);
-            sessionStorage.setItem("username", response.userData.username);
-            sessionStorage.setItem("id_rol", response.userData.id_rol);
-            if(response.userData.reset){
+            setUserId(response.id);
+            localStorage.setItem("username", response.username);
+            localStorage.setItem("id_rol", response.id_rol);
+            if(response.reset){
                 setDialogOpen(true);
             }else{
                 navigate("/");
@@ -50,9 +49,8 @@ const Auth = () => {
                 username: response.username,
                 password: values.password
             });
-            sessionStorage.setItem("auth-token", userData.token);
-            sessionStorage.setItem("username", userData.userData.username);
-            sessionStorage.setItem("id_rol", userData.userData.id_rol);
+            localStorage.setItem("username", userData.username);
+            localStorage.setItem("id_rol", userData.id_rol);
             setDialogOpen(false);
             navigate("/");
         }
@@ -63,7 +61,7 @@ const Auth = () => {
             <AppBar position="fixed">
                 <Toolbar sx={styles.toolbar}>
                     <Typography variant="h6" noWrap sx={styles.appBarTitle}>
-                        Municipalidad de Cipolletti
+                        Bar Title
                     </Typography>
                 </Toolbar>
             </AppBar>

@@ -11,7 +11,7 @@ import {
     styled,
     useTheme
 } from "@mui/material";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { Dehaze, ExpandLess, ExpandMore } from "@mui/icons-material";
 
 const NavigationItem = ({ item, collapsed }) => {
     const { pathname } = useLocation();
@@ -20,6 +20,7 @@ const NavigationItem = ({ item, collapsed }) => {
     //If nested nav
     const [open, setOpen] = useState(false);
     const nested = typeof item.navigationData === "object" ? true : false;
+    const alone = item.navigationData === undefined ? true : false;
 
     const handleClick = () => {
         setOpen(!open);
@@ -49,17 +50,17 @@ const NavigationItem = ({ item, collapsed }) => {
                         styles.listLink,
                         collapsed && styles.listLinkCollapsed
                     ]}
-                    component={!nested ? Link : "div"}
+                    component={!nested || alone ? Link : "div"}
                     to={`${item.path}`}>
-                    {item.icon && <ListItemIcon sx={styles.listIcon}>
-                        {(item.icon) && <item.icon /> || ""}
+                    {(item.icon || alone) && <ListItemIcon sx={styles.listIcon}>
+                        {(item.icon) && <item.icon /> || <Dehaze />}
                     </ListItemIcon>}
                     <ListItemText
                         primaryTypographyProps={
                             collapsed ?
                             {sx: styles.collapsedListItemText}
                             :
-                            {sx: [!item.icon && styles.listItemText]}
+                            {sx: [(!item.icon && !alone) && styles.listItemText]}
                         }>
                         {item.name}
                     </ListItemText>

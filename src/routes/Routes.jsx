@@ -26,16 +26,27 @@ export const Routes = (navItems) => {
             } : null;
     });
 
+    const withoutChildren = [];
+
     const navigation = navItemsParents.map((parent) => {
+
+        const withChildren = [];
         
-        const matches = navItems.filter(
-            (child) => (`/${child.path}`).indexOf(parent.path) !== -1 && child.shown
-        );
-        return {
+        const matches = navItems.map((child) => {
+            if(child.shown){
+                return (`/${child.path}`).indexOf(parent.path) !== -1
+                    ? withChildren.push(child)
+                    : withoutChildren.push(child);
+            }
+        });
+
+        return matches.length === 0 ? null : {
             ...parent,
-            navigationData: matches
+            navigationData: withChildren
         }
     });
 
-    return { navigation, securedPages };
+    const ret = navigation.concat(withoutChildren);
+
+    return { navigation: ret, securedPages };
 }
